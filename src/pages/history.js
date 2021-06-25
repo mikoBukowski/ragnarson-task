@@ -55,7 +55,7 @@ const History = () => (
       <Flex
         h="8vh"
         w="100%"
-        m={5}
+        m={6}
         alignItems="center"
         justifyContent="space-around"
       >
@@ -66,7 +66,7 @@ const History = () => (
       
       <Heading
         fontWeight={700}
-        fontSize={{ base: '4xl', md: '6xl' }}
+        fontSize={{ base: '5xl', md: '8xl' }}
         textShadow="rgb(0 0 0 /12%) 0 6px 16px"        
       >
         Game Results
