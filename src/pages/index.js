@@ -1,5 +1,5 @@
 import { Container } from '../components/Container'
-
+import { useEffect, useCallback, setState, useState } from 'react'
 import { 
   Flex, 
   Heading,
@@ -13,18 +13,37 @@ import {
 import Link from 'next/link'
 
 const Index = () => {
+  const [currentValue, changeCurrentValue] = useState(0)
+  const [matchHistory, changeMatchHistory] = useState([])
+  const [roundCounter, changeRoundCounter] = useState(1)
+  const [pointsCounter, changePointsCounter] = useState(0)
+  const endpoint = "http://roll.diceapi.com/json/d6"
 
+  const fetchData = useCallback(() => {
+    fetch(endpoint)
+      .then(blob => blob.json())
+      .then(data => matchHistory.push(data))
+      .then(console.log(matchHistory))
+      // .then(data => console.log(data))
+  }, [])
 
-
+  if (roundCounter >= 30) {
+    changeRoundCounter(0)
+    alert('GAME OVER')
+  }
+  
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
 
   return (
     <>
       <Container>
         <VStack
-          h={['90%', '80%', '75%', '68%']}
-          w={['90%', '80%', '75%', '50%']}
+          h={['97%', '80%', '75%', '68%']}
+          w={['97%', '80%', '75%', '50%']}
           borderRadius={10}
-          boxShadow="rgb(0 0 0 /12%) 0 6px 16px"
+          boxShadow="lg"
           justifyContent="space-around"
           bgGradient="linear(to-tr, teal.300,blue.400)" 
           >
@@ -34,20 +53,28 @@ const Index = () => {
             alignItems="center"
             justifyContent="space-around"
             >
-            <Flex>Points</Flex>
+            <Flex
+            >Points {pointsCounter}</Flex>
             <Link href="/history">
-              <Button>History</Button>
+              <Button
+                data={matchHistory}
+              >History</Button>
             </Link>
-            <Flex>Round</Flex>
+            <Flex
+            >Round {roundCounter}</Flex>
           </Flex>
 
           <Image
             h={200}
             w={200}
-            src="/logo-ams.png"
+            src={"/logo-ams.png"}
             border="1px"
             borderRadius={10}
-            />
+          />
+
+          <Flex>
+            Ilość oczek: {currentValue}
+          </Flex>
           
           <Heading
             fontWeight={700}
@@ -69,6 +96,8 @@ const Index = () => {
               boxShadow="rgb(0 0 0 /12%) 0 6px 16px"
               fontWeight={700}
               fontSize={"xl"}
+              onClick={() => 
+                fetchData(changeRoundCounter(roundCounter + 1))}
               >
               Higher
             </Button>
@@ -80,6 +109,8 @@ const Index = () => {
               boxShadow="rgb(0 0 0 /12%) 0 6px 16px"
               fontWeight={700}
               fontSize={"xl"}
+              onClick={() => 
+                fetchData(changeRoundCounter(roundCounter + 1))}
               >
               Lower
             </Button>  
