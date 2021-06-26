@@ -27,7 +27,7 @@ const Index = () => {
       // .then(data => console.log(data))
   }, [])
 
-  if (roundCounter >= 30) {
+  if (roundCounter >= 31) {
     changeRoundCounter(0)
     alert('GAME OVER')
   }
@@ -40,10 +40,10 @@ const Index = () => {
     <>
       <Container>
         <VStack
-          h={['97%', '80%', '75%', '68%']}
+          h={['98%', '80%', '75%', '68%']}
           w={['97%', '80%', '75%', '50%']}
           borderRadius={10}
-          boxShadow="lg"
+          boxShadow="dark-lg"
           justifyContent="space-around"
           bgGradient="linear(to-tr, teal.300,blue.400)" 
           >
