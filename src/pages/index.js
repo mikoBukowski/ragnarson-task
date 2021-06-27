@@ -14,27 +14,42 @@ import Link from 'next/link'
 
 const Index = () => {
   const [currentValue, setCurrentValue] = useState(0)
+  const [previousValue, setPreviousValue] = useState(0)
   const [matchHistory, setMatchHistory] = useState([])
   const [roundCounter, setRoundCounter] = useState(1)
   const [pointsCounter, setPointsCounter] = useState(0)
   // const endpoint = "http://roll.diceapi.com/json/d6"
+  // changed to this specific endpoint due to cors policy, HTTPS does the trick 
   const endpoint = "https://dice-api.genzouw.com/v1/dice"
 
   const fetchData = useCallback(() => {
     fetch(endpoint)
       .then((blob) => blob.json())
       // .then(payload => matchHistory.push(payload.dice[0].value))
-      .then(payload => matchHistory.push(payload.dice))
-      //get latest element from an array
-      .then(payload =>
-         setCurrentValue(matchHistory[matchHistory.length -1]))
+      .then(payload => {
+        matchHistory.push(payload.dice),
+        setCurrentValue(matchHistory[matchHistory.length -1]), 
+        setPreviousValue(matchHistory[matchHistory.length -2])
+      })
   }, [])
 
-  console.log(matchHistory)
-  console.log(currentValue)
+  // console.log('array', matchHistory)
+  console.log('current', currentValue)
+  console.log('previous', previousValue)
+
+  const resolvePlayersChoice = (bet) => {
+    if (bet === true) {
+      console.log('HIGHER')
+    } else {
+      console.log('LOWER')
+    }
+  }
 
   if (roundCounter >= 31) {
+    //reset round counter
     setRoundCounter(1)
+    //wipe existing matchHistory array
+    matchHistory.splice(0, matchHistory.length)
     alert('GAME OVER')
   }
   
@@ -79,7 +94,10 @@ const Index = () => {
           />
 
           <Flex>
-            Ilość oczek: {currentValue}
+            Current: {currentValue}
+          </Flex>
+          <Flex>
+            Previous: {previousValue}
           </Flex>
           
           <Heading
@@ -103,7 +121,9 @@ const Index = () => {
               fontWeight={700}
               fontSize={"xl"}
               onClick={() => 
-                fetchData(setRoundCounter(roundCounter + 1))}
+                fetchData(setRoundCounter(roundCounter + 1),
+                resolvePlayersChoice(true)
+                )}
               >
               Higher
             </Button>
@@ -116,7 +136,9 @@ const Index = () => {
               fontWeight={700}
               fontSize={"xl"}
               onClick={() => 
-                fetchData(setRoundCounter(roundCounter + 1))}
+                fetchData(setRoundCounter(roundCounter + 1),
+                resolvePlayersChoice(false)
+                )}
               >
               Lower
             </Button>  
