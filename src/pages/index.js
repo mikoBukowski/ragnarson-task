@@ -17,12 +17,14 @@ const Index = () => {
   const [matchHistory, setMatchHistory] = useState([])
   const [roundCounter, setRoundCounter] = useState(1)
   const [pointsCounter, setPointsCounter] = useState(0)
-  const endpoint = "http://roll.diceapi.com/json/d6"
+  // const endpoint = "http://roll.diceapi.com/json/d6"
+  const endpoint = "https://dice-api.genzouw.com/v1/dice"
 
   const fetchData = useCallback(() => {
     fetch(endpoint)
       .then((blob) => blob.json())
-      .then(payload => matchHistory.push(payload.dice[0].value))
+      // .then(payload => matchHistory.push(payload.dice[0].value))
+      .then(payload => matchHistory.push(payload.dice))
       //get latest element from an array
       .then(payload =>
          setCurrentValue(matchHistory[matchHistory.length -1]))
