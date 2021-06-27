@@ -50,6 +50,8 @@ const Index = () => {
     setRoundCounter(1)
     //wipe existing matchHistory array
     matchHistory.splice(0, matchHistory.length)
+    setCurrentValue(0)
+    setPreviousValue(0)
     alert('GAME OVER')
   }
   
