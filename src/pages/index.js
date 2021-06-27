@@ -13,22 +13,26 @@ import {
 import Link from 'next/link'
 
 const Index = () => {
-  const [currentValue, changeCurrentValue] = useState(0)
-  const [matchHistory, changeMatchHistory] = useState([])
-  const [roundCounter, changeRoundCounter] = useState(1)
-  const [pointsCounter, changePointsCounter] = useState(0)
+  const [currentValue, setCurrentValue] = useState(0)
+  const [matchHistory, setMatchHistory] = useState([])
+  const [roundCounter, setRoundCounter] = useState(1)
+  const [pointsCounter, setPointsCounter] = useState(0)
   const endpoint = "http://roll.diceapi.com/json/d6"
 
   const fetchData = useCallback(() => {
     fetch(endpoint)
-      .then(blob => blob.json())
-      .then(data => matchHistory.push(data))
-      .then(console.log(matchHistory))
-      // .then(data => console.log(data))
+      .then((blob) => blob.json())
+      .then(payload => matchHistory.push(payload.dice[0].value))
+      //get latest element from an array
+      .then(payload =>
+         setCurrentValue(matchHistory[matchHistory.length -1]))
   }, [])
 
+  console.log(matchHistory)
+  console.log(currentValue)
+
   if (roundCounter >= 31) {
-    changeRoundCounter(0)
+    setRoundCounter(1)
     alert('GAME OVER')
   }
   
@@ -40,8 +44,8 @@ const Index = () => {
     <>
       <Container>
         <VStack
-          h={['98%', '80%', '75%', '68%']}
-          w={['97%', '80%', '75%', '50%']}
+          h={['92%', '80%', '75%', '68%']}
+          w={['99%', '80%', '75%', '50%']}
           borderRadius={10}
           boxShadow="dark-lg"
           justifyContent="space-around"
@@ -97,7 +101,7 @@ const Index = () => {
               fontWeight={700}
               fontSize={"xl"}
               onClick={() => 
-                fetchData(changeRoundCounter(roundCounter + 1))}
+                fetchData(setRoundCounter(roundCounter + 1))}
               >
               Higher
             </Button>
@@ -110,7 +114,7 @@ const Index = () => {
               fontWeight={700}
               fontSize={"xl"}
               onClick={() => 
-                fetchData(changeRoundCounter(roundCounter + 1))}
+                fetchData(setRoundCounter(roundCounter + 1))}
               >
               Lower
             </Button>  
