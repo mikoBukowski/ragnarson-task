@@ -48,7 +48,7 @@ const Index = () => {
   if (roundCounter >= 31) {
     //reset round counter
     setRoundCounter(1)
-    //wipe existing matchHistory array
+    //wipe existing arrays and values
     matchHistory.splice(0, matchHistory.length)
     setCurrentValue(0)
     setPreviousValue(0)
@@ -63,7 +63,7 @@ const Index = () => {
     <>
       <Container>
         <VStack
-          h={['92%', '80%', '75%', '68%']}
+          h={['88%', '80%', '75%', '68%']}
           w={['99%', '80%', '75%', '50%']}
           borderRadius={10}
           boxShadow="dark-lg"
@@ -90,14 +90,11 @@ const Index = () => {
           <Image
             h={200}
             w={200}
-            src={"/logo-ams.png"}
-            border="1px"
-            borderRadius={10}
+            src={`/dice/${currentValue}.png`}
+            borderRadius={25}
+            alt={currentValue}
           />
 
-          <Flex>
-            Current: {currentValue}
-          </Flex>
           <Flex>
             Previous: {previousValue}
           </Flex>
@@ -137,9 +134,10 @@ const Index = () => {
               boxShadow="rgb(0 0 0 /12%) 0 6px 16px"
               fontWeight={700}
               fontSize={"xl"}
+              // isDisabled={setTimeout(1000)}
               onClick={() => 
                 fetchData(setRoundCounter(roundCounter + 1),
-                resolvePlayersChoice(false)
+                resolvePlayersChoice(false),
                 )}
               >
               Lower

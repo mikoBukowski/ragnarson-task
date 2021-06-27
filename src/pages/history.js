@@ -16,7 +16,7 @@ const History = () => {
     <>
       <Container>
         <VStack
-          h={['92%', '80%', '75%', '68%']}
+          h={['88%', '80%', '75%', '68%']}
           w={['99%', '80%', '75%', '50%']}
           borderRadius={10}
           boxShadow="dark-lg"
