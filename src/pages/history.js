@@ -9,8 +9,8 @@ import {
 
 import Link from 'next/link'
 
-const History = () => {
-  // console.log(data)
+const History = (data) => {
+  console.log(data)
 
   return (
     <>
@@ -28,7 +28,7 @@ const History = () => {
             w="100%"
             m={6}
             alignItems="center"
-            justifyContent="space-around"
+            justifyContent="space-evenly"
           >
             <Link href="/">
               <Button>Back to game</Button>
