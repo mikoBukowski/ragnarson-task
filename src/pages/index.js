@@ -8,49 +8,50 @@ import {
   Button,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import axios from 'axios';
 
 const Index = () => {
   const [data, setData] = useState([0]);
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
   const [dice, setDice] = useState(0);
-  const [userChoice, setUserChoice] = useState(null)
+  const [userChoice, setUserChoice] = useState(0)
   // const endpoint = "http://roll.diceapi.com/json/d6"
   // changed to this specific endpoint due to cors policy, HTTPS does the trick // .then(payload => data.push(payload.dice[0].value))  
   const endpoint = "https://dice-api.genzouw.com/v1/dice";
 
   useEffect(() => {
-     const fetchData = async () => {
-      await fetch(endpoint)
-      .then((blob) => blob.json())    
-      .then((payload) => {
-          data.push(payload.dice),
-          setDice(data[data.length - 1]),
-          console.log('first')
-      })
-      console.log('second') 
+    const fetchData = async () => {
+      const result = await axios(endpoint)
+      setData(result.data)
+      setDice(result.data.dice)
+      console.log(result.data.dice)
+      // Destructuring assignment
+      // const [currentDice] = result.data.slice(-1)
+      // const [choice] = result.data.slice(-2) 
+      
+      // setUserChoice(data.slice(-1))
+
+      setUserChoice()
 
     }
-    resetScore()
+    // console.log(dice)
     fetchData()
-
-    round === 0 ? console.log('dupa') : checkResults()
-    console.log(userChoice, '2')
-    console.log(dice, '2')
-
+    resetScore()
+    round === 0 ? null : checkResults()
   }, [round])
-  
+ 
   const checkResults = () => {
-    // console.log('users choice', userChoice)
+    // console.log('SUMUJE PKTY')
     // console.log('dice' , dice)
     //TODO ADD POINT
     // setDice(data[data.length - 1])
   }
 
-  const handleClick = (value) => { 
-    console.log(userChoice, '1')
-    console.log(dice, '1')
-    setUserChoice(value)
+  const handleClick = () => { 
+    // console.log(userChoice, '1')
+    // console.log(dice, '1')
+    // setUserChoice(value)
     setRound(round + 1)
   }
 
@@ -64,6 +65,38 @@ const Index = () => {
       alert("GAME OVER");
     }
   }
+  
+  // useEffect(() => {
+  //    const fetchData = async () => {
+  //     await fetch(endpoint)
+  //     .then((blob) => blob.json())    
+  //     .then((payload) => {
+  //         data.push(payload.dice)
+  //         const [currentDice] = data.slice(-1)
+  //         const [choice] = data.slice(-2) 
+  //         // Destructuring assignment
+  //         setUserChoice(choice)
+  //         setDice(currentDice)
+  //         console.log(userChoice, 'userChoice')
+  //         console.log(dice, 'current dice')
+  //         console.log('first')
+  //     })
+  //     .then(console.log('DRUGI'))
+  //     console.log('second')
+  //     resetScore()
+  //     // checkResults()
+    
+     
+  //   }
+  //   round === 0 ? console.log('dupa') : checkResults()
+  //   fetchData()
+
+  //   // resetScore()
+  //   // round === 0 ? console.log('dupa') : checkResults()
+  //   // console.log(userChoice, '2 userChoice')
+  //   // console.log(dice, '2 current dice')
+  // }, [round])
+  
 
   return (
     <>
@@ -82,7 +115,7 @@ const Index = () => {
             alignItems="center"
             justifyContent="space-evenly"
           >
-            <Flex>score {score.toFixed(1)}</Flex>
+            <Flex>Score {score.toFixed(1)}</Flex>
             <Link href="/history">
               <Button data={data}>Game Results</Button>
             </Link>
@@ -92,7 +125,7 @@ const Index = () => {
           <Image
             h={200}
             w={200}
-            src={`/dice/${dice}.png`}
+            src={`/dice/${data.dice}.png`}
             borderRadius={28}
             alt={dice}
             fallbackSrc={`/dice/0.png`}
@@ -115,8 +148,8 @@ const Index = () => {
               fontWeight={700}
               fontSize={"xl"}
               onClick={() =>
-                handleClick(dice)
-                // fetchData(setRound(round + 1), betHigher(true))
+                handleClick()
+                // setRound(round + 1)
               }
             >
               Higher
@@ -130,8 +163,8 @@ const Index = () => {
               fontWeight={700}
               fontSize={"xl"}
               onClick={() =>
-                handleClick(dice)
-                // fetchData(setRound(round + 1), betLower(false))
+                handleClick()
+                // setRound(round + 1)
               }
             >
               Lower
