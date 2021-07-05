@@ -1,24 +1,25 @@
-import { Container } from "../components/Container";
-import { useEffect, useState } from "react";
+import { Container } from "../components/Container"
+import { useEffect, useState } from "react"
 import {
   Flex,
   Heading,
   VStack,
   Image,
   Button,
-} from "@chakra-ui/react";
-import Link from "next/link";
-import axios from 'axios';
+} from "@chakra-ui/react"
+import Link from "next/link"
+import axios from 'axios'
 
 const Index = () => {
-  const [data, setData] = useState([0]);
-  const [round, setRound] = useState(0);
-  const [score, setScore] = useState(0);
-  const [dice, setDice] = useState(null);
-  const [isError, setIsError] = useState(false);
+  const [data, setData] = useState([0])
+  const [round, setRound] = useState(0)
+  const [score, setScore] = useState(0)
+  const [dice, setDice] = useState(null)
+  const [isError, setIsError] = useState(false)
+  const [userChoice, setUserChoice] = useState(null)
+  const endpoint = "https://dice-api.genzouw.com/v1/dice"
   // const endpoint = "http://roll.diceapi.com/json/d6"
   // changed to this specific endpoint due to cors policy, HTTPS does the trick // .then(payload => data.push(payload.dice[0].value))  
-  const endpoint = "https://dice-api.genzouw.com/v1/dice";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,8 +30,6 @@ const Index = () => {
         setData(result.data)
         setDice(result.data.dice)
         round === 0 ? null : checkResults(result.data.dice)
-        console.log(dice)
-        console.log(result.data.dice)
       } 
       catch (error) {
         setIsError(true)
@@ -41,11 +40,18 @@ const Index = () => {
   }, [round])
   
   const checkResults = (currentDice) => {
-    console.log(`'PREVIOUS DICE - ${dice}'`)
     console.log(`'CURRENT DICE - ${currentDice}'`)
-    
+    console.log(`'PREVIOUS DICE - ${dice}'`)
+    console.log(`'USERS CHOICE - ${userChoice}'`)
 
-
+    if (userChoice) {
+      //ADD POINTS IF TRUE
+      dice <= currentDice ? setScore(score + 0.1) :
+        null
+    } else {
+      dice >= currentDice ? setScore(score + 0.1) : 
+        null
+    }
   }
 
   const handleClick = () => { 
@@ -55,7 +61,7 @@ const Index = () => {
   const resetScore = () => {
     if (round >= 31) {
       setRound(0);
-      data.splice(0, data.length);
+      setData(0)
       setDice(null);
       setScore(0);
       alert("GAME OVER");
@@ -112,7 +118,7 @@ const Index = () => {
               fontWeight={700}
               fontSize={"xl"}
               onClick={() =>
-                handleClick()
+                handleClick(setUserChoice(true))
               }
             >
               Higher
@@ -126,7 +132,7 @@ const Index = () => {
               fontWeight={700}
               fontSize={"xl"}
               onClick={() =>
-                handleClick()
+                handleClick(setUserChoice(false))
               }
             >
               Lower
