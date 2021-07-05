@@ -45,12 +45,9 @@ const Index = () => {
     console.log(`'USERS CHOICE - ${userChoice}'`)
 
     if (userChoice) {
-      //ADD POINTS IF TRUE
-      dice <= currentDice ? setScore(score + 0.1) :
-        null
+        dice <= currentDice ? setScore(score + 0.1) : null
     } else {
-      dice >= currentDice ? setScore(score + 0.1) : 
-        null
+        dice >= currentDice ? setScore(score + 0.1) : null
     }
   }
 
