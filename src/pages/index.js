@@ -12,11 +12,11 @@ import axios from 'axios'
 
 const Index = () => {
   const [data, setData] = useState([0])
-  const [round, setRound] = useState(0)
-  const [score, setScore] = useState(0)
   const [dice, setDice] = useState(null)
-  const [isError, setIsError] = useState(false)
   const [userChoice, setUserChoice] = useState(null)
+  const [score, setScore] = useState(0)
+  const [round, setRound] = useState(0)
+  const [isError, setIsError] = useState(false)
   const endpoint = "https://dice-api.genzouw.com/v1/dice"
   // const endpoint = "http://roll.diceapi.com/json/d6"
   // changed to this specific endpoint due to cors policy, HTTPS does the trick // .then(payload => data.push(payload.dice[0].value))  
@@ -45,9 +45,11 @@ const Index = () => {
     console.log(`'USERS CHOICE - ${userChoice}'`)
 
     if (userChoice) {
-        dice <= currentDice ? setScore(score + 0.1) : null
+        dice <= currentDice ? 
+        (setScore(score + 0.1), alert('You receive 0.1 points')) : null
     } else {
-        dice >= currentDice ? setScore(score + 0.1) : null
+        dice >= currentDice ? 
+        (setScore(score + 0.1), alert('You receive 0.1 points')) : null
     }
   }
 
@@ -88,7 +90,9 @@ const Index = () => {
             </Link>
             <Flex>Round {round}</Flex>
           </Flex>
-
+          
+          {isError && <div>Something went wrong ...</div>}
+          
           <Image
             h={200}
             w={200}
