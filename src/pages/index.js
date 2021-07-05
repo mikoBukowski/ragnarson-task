@@ -14,90 +14,54 @@ const Index = () => {
   const [data, setData] = useState([0]);
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
-  const [dice, setDice] = useState(0);
-  const [userChoice, setUserChoice] = useState(0)
+  const [dice, setDice] = useState(null);
+  const [isError, setIsError] = useState(false);
   // const endpoint = "http://roll.diceapi.com/json/d6"
   // changed to this specific endpoint due to cors policy, HTTPS does the trick // .then(payload => data.push(payload.dice[0].value))  
   const endpoint = "https://dice-api.genzouw.com/v1/dice";
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios(endpoint)
-      setData(result.data)
-      setDice(result.data.dice)
-      console.log(result.data.dice)
-      // Destructuring assignment
-      // const [currentDice] = result.data.slice(-1)
-      // const [choice] = result.data.slice(-2) 
-      
-      // setUserChoice(data.slice(-1))
+      setIsError(false);
 
-      setUserChoice()
-
+      try {
+        const result = await axios(endpoint)
+        setData(result.data)
+        setDice(result.data.dice)
+        round === 0 ? null : checkResults(result.data.dice)
+        console.log(dice)
+        console.log(result.data.dice)
+      } 
+      catch (error) {
+        setIsError(true)
+      }
     }
-    // console.log(dice)
     fetchData()
     resetScore()
-    round === 0 ? null : checkResults()
   }, [round])
- 
-  const checkResults = () => {
-    // console.log('SUMUJE PKTY')
-    // console.log('dice' , dice)
-    //TODO ADD POINT
-    // setDice(data[data.length - 1])
+  
+  const checkResults = (currentDice) => {
+    console.log(`'PREVIOUS DICE - ${dice}'`)
+    console.log(`'CURRENT DICE - ${currentDice}'`)
+    
+
+
   }
 
   const handleClick = () => { 
-    // console.log(userChoice, '1')
-    // console.log(dice, '1')
-    // setUserChoice(value)
     setRound(round + 1)
   }
 
   const resetScore = () => {
     if (round >= 31) {
       setRound(0);
-      // wipe existing data
       data.splice(0, data.length);
-      setDice(0);
+      setDice(null);
       setScore(0);
       alert("GAME OVER");
     }
   }
   
-  // useEffect(() => {
-  //    const fetchData = async () => {
-  //     await fetch(endpoint)
-  //     .then((blob) => blob.json())    
-  //     .then((payload) => {
-  //         data.push(payload.dice)
-  //         const [currentDice] = data.slice(-1)
-  //         const [choice] = data.slice(-2) 
-  //         // Destructuring assignment
-  //         setUserChoice(choice)
-  //         setDice(currentDice)
-  //         console.log(userChoice, 'userChoice')
-  //         console.log(dice, 'current dice')
-  //         console.log('first')
-  //     })
-  //     .then(console.log('DRUGI'))
-  //     console.log('second')
-  //     resetScore()
-  //     // checkResults()
-    
-     
-  //   }
-  //   round === 0 ? console.log('dupa') : checkResults()
-  //   fetchData()
-
-  //   // resetScore()
-  //   // round === 0 ? console.log('dupa') : checkResults()
-  //   // console.log(userChoice, '2 userChoice')
-  //   // console.log(dice, '2 current dice')
-  // }, [round])
-  
-
   return (
     <>
       <Container>
@@ -149,7 +113,6 @@ const Index = () => {
               fontSize={"xl"}
               onClick={() =>
                 handleClick()
-                // setRound(round + 1)
               }
             >
               Higher
@@ -164,7 +127,6 @@ const Index = () => {
               fontSize={"xl"}
               onClick={() =>
                 handleClick()
-                // setRound(round + 1)
               }
             >
               Lower
