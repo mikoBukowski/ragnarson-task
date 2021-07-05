@@ -24,14 +24,23 @@ const History = (data) => {
           bgGradient="linear(to-tr, teal.300,blue.400)" 
         >
           <Flex
-            h="8vh"
+            h="12vh"
             w="100%"
             m={6}
             alignItems="center"
             justifyContent="space-evenly"
           >
             <Link href="/">
-              <Button>Back to game</Button>
+              <Button
+                p={"9"}
+                borderRadius="full"
+                bgGradient="linear(to-tr, teal.300,yellow.400)"
+                boxShadow="rgb(0 0 0 /12%) 0 6px 16px"
+                fontWeight={700}
+                fontSize={"xl"}
+              >
+                Back <br></br> to game
+              </Button>
             </Link>
           </Flex>
           
@@ -41,6 +50,8 @@ const History = (data) => {
             textShadow="rgb(0 0 0 /12%) 0 6px 16px"        
           >
             Game Results
+
+
           </Heading>
 
         </VStack>

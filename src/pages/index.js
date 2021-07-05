@@ -6,6 +6,7 @@ import {
   VStack,
   Image,
   Button,
+  Spacer,
 } from "@chakra-ui/react"
 import Link from "next/link"
 import axios from 'axios'
@@ -16,6 +17,7 @@ const Index = () => {
   const [userChoice, setUserChoice] = useState(null)
   const [score, setScore] = useState(0)
   const [round, setRound] = useState(0)
+  const [gameResults, setGameResults] = useState([null])
   const [isError, setIsError] = useState(false)
   const endpoint = "https://dice-api.genzouw.com/v1/dice"
   // const endpoint = "http://roll.diceapi.com/json/d6"
@@ -86,7 +88,17 @@ const Index = () => {
           >
             <Flex>Score {score.toFixed(1)}</Flex>
             <Link href="/history">
-              <Button data={data}>Game Results</Button>
+              <Button
+                p={"9"}
+                borderRadius="full"
+                bgGradient="linear(to-tr, teal.300,yellow.400)"
+                boxShadow="rgb(0 0 0 /12%) 0 6px 16px"
+                fontWeight={700}
+                fontSize={"xl"}
+                data={gameResults}
+              >
+                Game <br></br> Results
+              </Button>
             </Link>
             <Flex>Round {round}</Flex>
           </Flex>
@@ -110,7 +122,7 @@ const Index = () => {
             Roll the dice!
           </Heading>
 
-          <Flex h="18%" w="100%" justifyContent="space-evenly">
+          <Flex h="12%" w="100%" justifyContent="space-evenly">
             <Button
               p={"9"}
               borderRadius="full"
