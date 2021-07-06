@@ -73,7 +73,7 @@ const Index = () => {
       setDice(null);
       setScore(0);
       setUserChoice(null)
-      alert(`'END SCORE: ${score.toFixed(1)}'`);
+      alert(`'END SCORE: ${score}'`);
     }
   }
   
