@@ -9,8 +9,7 @@ import {
 
 import Link from 'next/link'
 
-const History = (data) => {
-  console.log(data)
+const History = () => {
 
   return (
     <>

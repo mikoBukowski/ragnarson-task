@@ -6,7 +6,6 @@ import {
   VStack,
   Image,
   Button,
-  Spacer,
 } from "@chakra-ui/react"
 import Link from "next/link"
 import axios from 'axios'
@@ -17,7 +16,7 @@ const Index = () => {
   const [userChoice, setUserChoice] = useState(null)
   const [score, setScore] = useState(0)
   const [round, setRound] = useState(0)
-  const [gameResults, setGameResults] = useState([null])
+  const [gameResults, setGameResults] = useState([0])
   const [isError, setIsError] = useState(false)
   const endpoint = "https://dice-api.genzouw.com/v1/dice"
   // const endpoint = "http://roll.diceapi.com/json/d6"
@@ -33,6 +32,9 @@ const Index = () => {
         setDice(result.data.dice)
         round === 0 ? null : checkResults(result.data.dice)
         resetScore()
+        window.localStorage.setItem('round', round)
+        window.localStorage.setItem('score', score)
+        setGameResults()
       } 
       catch (error) {
         setIsError(true)
@@ -40,6 +42,11 @@ const Index = () => {
     }
     fetchData()
   }, [round])
+
+  useEffect(() => {
+    setRound(JSON.parse(window.localStorage.getItem('round')))
+    setScore(JSON.parse(window.localStorage.getItem('score')))
+  }, [])
   
   const checkResults = (currentDice) => {
     console.log(`'CURRENT DICE - ${currentDice}'`)
@@ -48,25 +55,25 @@ const Index = () => {
 
     if (userChoice) {
         dice <= currentDice ? 
-        (setScore(score + 0.1), alert('You receive 0.1 points')) : null
+        (setScore(score + 0.1), alert('You receive 0.1 pts')) : null
     } else {
         dice >= currentDice ? 
-        (setScore(score + 0.1), alert('You receive 0.1 points')) : null
+        (setScore(score + 0.1), alert('You receive 0.1 pts')) : null
     }
   }
-
+  
   const handleClick = () => { 
     setRound(round + 1)
   }
 
   const resetScore = () => {
-    if (round >= 2) {
+    if (round >= 30) {
       setRound(0);
       setData([0])
       setDice(null);
       setScore(0);
       setUserChoice(null)
-      alert(`'END SCORE: ${score}'`);
+      alert(`'END SCORE: ${score.toFixed(1)}'`);
     }
   }
   
@@ -96,7 +103,6 @@ const Index = () => {
                 boxShadow="rgb(0 0 0 /12%) 0 6px 16px"
                 fontWeight={700}
                 fontSize={"xl"}
-                data={gameResults}
               >
                 Game <br></br> Results
               </Button>
