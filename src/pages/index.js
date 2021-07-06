@@ -32,13 +32,13 @@ const Index = () => {
         setData(result.data)
         setDice(result.data.dice)
         round === 0 ? null : checkResults(result.data.dice)
+        resetScore()
       } 
       catch (error) {
         setIsError(true)
       }
     }
     fetchData()
-    resetScore()
   }, [round])
   
   const checkResults = (currentDice) => {
@@ -60,12 +60,13 @@ const Index = () => {
   }
 
   const resetScore = () => {
-    if (round >= 31) {
+    if (round >= 2) {
       setRound(0);
-      setData(0)
+      setData([0])
       setDice(null);
       setScore(0);
-      alert("GAME OVER");
+      setUserChoice(null)
+      alert(`'END SCORE: ${score}'`);
     }
   }
   
