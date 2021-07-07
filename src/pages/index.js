@@ -5,7 +5,6 @@ import {
   Heading,
   VStack,
   Image,
-  IconButton,
   Button,
 } from "@chakra-ui/react"
 import Link from "next/link"
@@ -44,7 +43,7 @@ const Index = () => {
     }
     fetchData()
 
-  }, [round])
+  }, [round, resume])
 
   useEffect(() => {
     setRound(JSON.parse(window.localStorage.getItem('round')))
@@ -53,7 +52,7 @@ const Index = () => {
   }, [])
   
   const handleGameOver = () => {
-    if (round >= 2) {
+    if (round >= 30) {
       resetScore()
       alert(`'END SCORE: ${score}'`);
     }
@@ -215,9 +214,13 @@ const Index = () => {
           >
             Game Results
           </Heading>
+
+          TODO: ZMAPUJ WYSWIETLANIE LISTY WYNIKOW I GITARA
+
         </VStack>
         
         {/* Resume game? */}
+
         <VStack
           h={['88%', '80%', '75%', '68%']}
           w={['99%', '80%', '75%', '50%']}
@@ -267,7 +270,7 @@ const Index = () => {
                 boxShadow="rgb(0 0 0 /12%) 0 6px 16px"
                 fontWeight={700}
                 fontSize={"xl"}
-                onClick={() => { resetScore(); setResume('none'); }}
+                onClick={() => { resetScore(); setResume('none');}}
                 >
                 No
               </Button>
