@@ -34,7 +34,7 @@ const Index = () => {
         setData(result.data)
         setDice(result.data.dice)
         round === 0 ? null : checkResults(result.data.dice)
-        resetScore()
+        handleGameOver()
         window.localStorage.setItem('round', round)
         window.localStorage.setItem('score', score)
       } 
@@ -52,14 +52,26 @@ const Index = () => {
     handlePageReload()
   }, [])
   
-  const handlePageReload = () => {
-    if (round !== 0) {
-      if (window.performance) {
-        if (performance.navigation.type == 1) {
-          setResume('flex')
-        } 
-      }  
+  const handleGameOver = () => {
+    if (round >= 2) {
+      resetScore()
+      alert(`'END SCORE: ${score}'`);
     }
+  }
+
+  const resetScore = () => {
+      setRound(0);
+      setData([0])
+      setScore(0);
+      setUserChoice(null)
+  }
+
+  const handlePageReload = () => {
+    if (window.performance) {
+      if (performance.navigation.type == 1) {
+        round !== 0 ? null : setResume('flex')
+      } 
+    }  
   }
 
   const checkResults = (currentDice) => {
@@ -80,17 +92,6 @@ const Index = () => {
     setRound(round + 1)
   }
 
-  const resetScore = () => {
-    if (round >= 30) {
-      setRound(0);
-      setData([0])
-      setDice(null);
-      setScore(0);
-      setUserChoice(null)
-      alert(`'END SCORE: ${score}'`);
-    }
-  }
-  
   return (
     <>
       <Container>
