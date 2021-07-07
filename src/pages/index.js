@@ -215,7 +215,7 @@ const Index = () => {
             Game Results
           </Heading>
 
-          TODO: ZMAPUJ WYSWIETLANIE LISTY WYNIKOW I GITARA
+          {/* TODO: ZMAPUJ WYSWIETLANIE LISTY WYNIKOW I GITARA */}
 
         </VStack>
         
