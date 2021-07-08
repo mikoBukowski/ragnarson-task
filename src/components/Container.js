@@ -9,6 +9,7 @@ export const Container = (props) => {
       direction="column"
       alignItems="center"
       justifyContent="center"
+      bgColor="#16161D"
       {...props}
     />
   )
