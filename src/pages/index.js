@@ -27,7 +27,7 @@ const Index = () => {
       try {
         const result = await axios(endpoint)
         setData(result.data)
-        setGameResults([
+        round === 0 ? null : setGameResults([
           ...gameResults,
           {
             round: round,
@@ -36,14 +36,15 @@ const Index = () => {
         ]);
         setDice(result.data.dice)
         round === 0 ? null : checkResults(result.data.dice)
-        handleGameOver()
-        handleLocalStorage()
       } catch (error) {
         setIsError(true)
+      } finally {
+        handleLocalStorage()
       }
       setIsLoading(false)
+      handleGameOver()
     };
-
+    
     fetchData()
   }, [round, resume])
 
@@ -59,20 +60,20 @@ const Index = () => {
     localStorage.setItem("score", score?.toFixed(1))
     localStorage.setItem("gameResults", JSON.stringify(gameResults))
   };
-
-  const handleGameOver = () => {
-    if (round >= 30) {
-      resetScore()
-      alert(`END SCORE: ${score?.toFixed(1)}`)
-    }
-  };
-
+  
   const resetScore = () => {
     setRound(0)
     setData([0])
     setScore(0)
     setUserChoice(null)
     setGameResults([])
+  };
+
+  const handleGameOver = () => {
+    if (round >= 31) {
+      resetScore()
+      alert(`END SCORE: ${score?.toFixed(1)}`)
+    }
   };
 
   const handlePageReload = () => {
