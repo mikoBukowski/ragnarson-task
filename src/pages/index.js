@@ -7,6 +7,9 @@ import {
   Flex,
   Image,
   Skeleton,
+  Spacer,
+  Center,
+  Text
 } from "@chakra-ui/react";
 import axios from "axios";
 
@@ -16,11 +19,11 @@ const Index = () => {
   const [userChoice, setUserChoice] = useState(null);
   const [score, setScore] = useState(0);
   const [round, setRound] = useState(0);
+  const [gameResults, setGameResults] = useState([]);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [display, changeDisplay] = useState("none");
   const [resume, setResume] = useState("none");
-  const [gameResults, setGameResults] = useState({});
   const endpoint = "https://dice-api.genzouw.com/v1/dice";
   // const endpoint = "http://roll.diceapi.com/json/d6"
   // changed to this specific endpoint due to cors policy during deployment, HTTPS does the trick // .then(payload => data.push(payload.dice[0].value))
@@ -33,7 +36,10 @@ const Index = () => {
       try {
         const result = await axios(endpoint);
         setData(result.data);
-        setGameResults(result.data);
+        setGameResults([ ...gameResults, {
+          round: round,
+          score: score?.toFixed(1),
+        }]);
         setDice(result.data.dice);
         round === 0 ? null : checkResults(result.data.dice);
         handleGameOver();
@@ -51,12 +57,14 @@ const Index = () => {
   useEffect(() => {
     setRound(JSON.parse(window.localStorage.getItem("round")));
     setScore(JSON.parse(window.localStorage.getItem("score")));
+    setGameResults(JSON.parse(window.localStorage.getItem("gameResults")));
     handlePageReload();
   }, []);
 
   const handleLocalStorage = () => {
     window.localStorage.setItem("round", round);
     window.localStorage.setItem("score", score);
+    window.localStorage.setItem("gameResults", JSON.stringify(gameResults));
   };
 
   const handleGameOver = () => {
@@ -71,6 +79,7 @@ const Index = () => {
     setData([0]);
     setScore(0);
     setUserChoice(null);
+    setGameResults([])
   };
 
   const handlePageReload = () => {
@@ -82,10 +91,6 @@ const Index = () => {
   };
 
   const checkResults = (currentDice) => {
-    // console.log(`'CURRENT DICE - ${currentDice}'`)
-    // console.log(`'PREVIOUS DICE - ${dice}'`)
-    // console.log(`'USERS CHOICE - ${userChoice}'`)
-
     if (userChoice) {
       dice <= currentDice ? setScore(score + 0.1) : null;
     } else {
@@ -155,21 +160,29 @@ const Index = () => {
             Back <br></br> to game
           </StyledButton>
 
-          <StyledHeading> Game Results </StyledHeading>
+          <StyledHeading> Round Score </StyledHeading>
 
-          {/* TODO: ZMAPUJ WYSWIETLANIE LISTY WYNIKOW I GITARA */}
-
-          {/* {isLoading ? (
-            <div>Loading ...</div>
+          {isLoading ? (
+            <div>Loading results ...</div>
           ) : (
-            <ul>
-              {data.hits.map(item => (
-                <li key={item.objectID}>
-                  <a href={item.url}>{item.title}</a>
-                </li>
+            <Center 
+            h="150%"
+            w="100%"
+            flexDir="column"
+            flex="wrap"
+            >
+              {gameResults.map(item => (
+                <Flex
+                  h="100%"
+                  w="100%"
+                  justifyContent="space-around"
+                  key={item.objectID}>
+                  <Text fontSize={20}>Round: {item.round}</Text>
+                  <Text fontSize={20}>Score: {item.score}</Text>
+                </Flex>
               ))}
-            </ul>
-          )} */}
+            </Center>
+          )}
         </Stack>
 
         {/* Resume game? */}
