@@ -6,7 +6,7 @@ export const Stack = (props) => {
   
   return (
     <VStack
-      h={["86%", "80%", "75%", "68%"]}
+      h={["99vh", "80%", "75%", "68%"]}
       w={["99%", "80%", "75%", "50%"]}
       borderRadius={10}
       boxShadow="dark-lg"
