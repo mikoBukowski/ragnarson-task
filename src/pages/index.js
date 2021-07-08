@@ -3,14 +3,7 @@ import { Stack } from "..//components/Stack";
 import { StyledHeading } from "..//components/Heading";
 import { StyledButton } from "..//components/Button";
 import { useEffect, useState } from "react";
-import {
-  Flex,
-  Image,
-  Skeleton,
-  Spacer,
-  Center,
-  Text
-} from "@chakra-ui/react";
+import { Flex, Image, Skeleton, Spacer, Center, Text } from "@chakra-ui/react";
 import axios from "axios";
 
 const Index = () => {
@@ -36,10 +29,13 @@ const Index = () => {
       try {
         const result = await axios(endpoint);
         setData(result.data);
-        setGameResults([ ...gameResults, {
-          round: round,
-          score: score?.toFixed(1),
-        }]);
+        setGameResults([
+          ...gameResults,
+          {
+            round: round,
+            score: score?.toFixed(1),
+          },
+        ]);
         setDice(result.data.dice);
         round === 0 ? null : checkResults(result.data.dice);
         handleGameOver();
@@ -79,7 +75,7 @@ const Index = () => {
     setData([0]);
     setScore(0);
     setUserChoice(null);
-    setGameResults([])
+    setGameResults([]);
   };
 
   const handlePageReload = () => {
@@ -165,18 +161,14 @@ const Index = () => {
           {isLoading ? (
             <div>Loading results ...</div>
           ) : (
-            <Center 
-            h="150%"
-            w="100%"
-            flexDir="column"
-            flex="wrap"
-            >
-              {gameResults.map(item => (
+            <Center h="150%" w="100%" flexDir="column" flex="wrap">
+              {gameResults.map((item) => (
                 <Flex
                   h="100%"
                   w="100%"
                   justifyContent="space-around"
-                  key={item.objectID}>
+                  key={item.objectID}
+                >
                   <Text fontSize={20}>Round: {item.round}</Text>
                   <Text fontSize={20}>Score: {item.score}</Text>
                 </Flex>
