@@ -20,7 +20,7 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [display, changeDisplay] = useState("none");
   const [resume, setResume] = useState("none");
-  const [gameResults, setGameResults] = useState({ game: [0] });
+  const [gameResults, setGameResults] = useState({});
   const endpoint = "https://dice-api.genzouw.com/v1/dice";
   // const endpoint = "http://roll.diceapi.com/json/d6"
   // changed to this specific endpoint due to cors policy during deployment, HTTPS does the trick // .then(payload => data.push(payload.dice[0].value))
@@ -41,7 +41,7 @@ const Index = () => {
       } catch (error) {
         setIsError(true);
       }
-
+      console.log(gameResults)
       setIsLoading(false);
     };
 
@@ -60,7 +60,7 @@ const Index = () => {
   }
   
   const handleGameOver = () => {
-    if (round >= 2) {
+    if (round >= 30) {
       resetScore();
       alert(`'END SCORE: ${score?.toFixed(1)}'`);
     }
