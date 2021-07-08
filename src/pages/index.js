@@ -70,7 +70,7 @@ const Index = () => {
   };
 
   const handleGameOver = () => {
-    if (round >= 31) {
+    if (round >= 30) {
       resetScore()
       alert(`END SCORE: ${score?.toFixed(1)}`)
     }
