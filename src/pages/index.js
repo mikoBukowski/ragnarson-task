@@ -105,11 +105,11 @@ const Index = () => {
             alignItems="center"
             justifyContent="space-evenly"
           >
-            <Text fontSize={20}>Score {score?.toFixed(1)}</Text>
+            <Text fontSize={[20, 20, 30, 30 ]}>Score {score?.toFixed(1)}</Text>
             <StyledButton onClick={() => changeDisplay("flex")}>
               Game <br></br> Results
             </StyledButton>
-            <Text fontSize={20}>Round {round}</Text>
+            <Text fontSize={[20, 20, 30, 30 ]}>Round {round}</Text>
           </Flex>
 
           {isError && <div>Something went wrong ...</div>}
@@ -151,20 +151,20 @@ const Index = () => {
             Back <br></br> to game
           </StyledButton>
 
-          <StyledHeading> Round  Score </StyledHeading>
+          <StyledHeading> Round | Score </StyledHeading>
           {isLoading ? (
             <Center>Loading results ...</Center>
           ) : (
-            <Center h="150%" w="100%" flexDir="column-reverse" flex="wrap">
+            <Center h="300%" w="100%" flexDir="column-reverse" flex="wrap">
               {gameResults.map((item) => (
                 <Flex
                   h="100%"
                   w="100%"
-                  justifyContent="space-evenly"
+                  justifyContent="space-around"
                   key={item.key}
                 > 
-                  <Text fontSize={50}>{item.round}</Text>
-                  <Text fontSize={50}>{item.score}</Text>
+                  <Text fontSize={[40, 40, 40, 50 ]}>{item.round}</Text>
+                  <Text fontSize={[40, 40, 40, 50 ]}>{item.score}</Text>
                 </Flex>
               ))}
             </Center>
