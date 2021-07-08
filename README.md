@@ -1,7 +1,15 @@
+# Changes
+----
+https://dice-api.genzouw.com/v1/dice
+Switched to this specific endpoint due to cors policy during deployment, HTTPS does the trick.
+
 # Recruitment assignment
 ----
+https://dice-api.genzouw.com/v1/dice
+Changed to this specific endpoint due to cors policy during deployment, HTTPS does the trick. 
 
 The task is to develop a simple game utilizing API http://roll.diceapi.com/ or https://deckofcardsapi.com/ .
+
 
 ## Game rules:
 

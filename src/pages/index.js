@@ -3,32 +3,30 @@ import { Stack } from "..//components/Stack";
 import { StyledHeading } from "..//components/Heading";
 import { StyledButton } from "..//components/Button";
 import { useEffect, useState } from "react";
-import { Flex, Image, Skeleton, Spacer, Center, Text } from "@chakra-ui/react";
+import { Flex, Image, Skeleton, Center, Text } from "@chakra-ui/react";
 import axios from "axios";
 
 const Index = () => {
-  const [data, setData] = useState([0]);
-  const [dice, setDice] = useState(null);
-  const [userChoice, setUserChoice] = useState(null);
-  const [score, setScore] = useState(0);
-  const [round, setRound] = useState(0);
-  const [gameResults, setGameResults] = useState([]);
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [display, changeDisplay] = useState("none");
-  const [resume, setResume] = useState("none");
-  const endpoint = "https://dice-api.genzouw.com/v1/dice";
-  // const endpoint = "http://roll.diceapi.com/json/d6"
-  // changed to this specific endpoint due to cors policy during deployment, HTTPS does the trick // .then(payload => data.push(payload.dice[0].value))
+  const [data, setData] = useState([0]),
+        [dice, setDice] = useState(null),
+        [userChoice, setUserChoice] = useState(null),
+        [score, setScore] = useState(0),
+        [round, setRound] = useState(0),
+        [gameResults, setGameResults] = useState([]),
+        [isError, setIsError] = useState(false),
+        [isLoading, setIsLoading] = useState(false),
+        [display, changeDisplay] = useState("none"),
+        [resume, setResume] = useState("none"),
+        endpoint = "https://dice-api.genzouw.com/v1/dice"
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsError(false);
-      setIsLoading(true);
+      setIsError(false)
+      setIsLoading(true)
 
       try {
-        const result = await axios(endpoint);
-        setData(result.data);
+        const result = await axios(endpoint)
+        setData(result.data)
         setGameResults([
           ...gameResults,
           {
@@ -36,66 +34,65 @@ const Index = () => {
             score: score?.toFixed(1),
           },
         ]);
-        setDice(result.data.dice);
-        round === 0 ? null : checkResults(result.data.dice);
-        handleGameOver();
-        handleLocalStorage();
+        setDice(result.data.dice)
+        round === 0 ? null : checkResults(result.data.dice)
+        handleGameOver()
+        handleLocalStorage()
       } catch (error) {
-        setIsError(true);
+        setIsError(true)
       }
-      console.log(gameResults);
-      setIsLoading(false);
+      setIsLoading(false)
     };
 
-    fetchData();
-  }, [round, resume]);
+    fetchData()
+  }, [round, resume])
 
   useEffect(() => {
-    setRound(JSON.parse(window.localStorage.getItem("round")));
-    setScore(JSON.parse(window.localStorage.getItem("score")));
-    setGameResults(JSON.parse(window.localStorage.getItem("gameResults")));
-    handlePageReload();
-  }, []);
+    setRound(JSON.parse(localStorage.getItem("round")))
+    setScore(JSON.parse(localStorage.getItem("score")))
+    setGameResults(JSON.parse(localStorage.getItem("gameResults")))
+    handlePageReload()
+  }, [])
 
   const handleLocalStorage = () => {
-    window.localStorage.setItem("round", round);
-    window.localStorage.setItem("score", score);
-    window.localStorage.setItem("gameResults", JSON.stringify(gameResults));
+    localStorage.setItem("round", round)
+    localStorage.setItem("score", score)
+    localStorage.setItem("gameResults", JSON.stringify(gameResults))
   };
 
   const handleGameOver = () => {
     if (round >= 30) {
-      resetScore();
-      alert(`'END SCORE: ${score?.toFixed(1)}'`);
+      resetScore()
+      alert(`END SCORE: ${score?.toFixed(1)}`)
     }
   };
 
   const resetScore = () => {
-    setRound(0);
-    setData([0]);
-    setScore(0);
-    setUserChoice(null);
-    setGameResults([]);
+    setRound(0)
+    setData([0])
+    setScore(0)
+    setUserChoice(null)
+    setGameResults([])
   };
 
   const handlePageReload = () => {
-    if (window.performance) {
+    if (performance) {
       if (performance.navigation.type == 1) {
-        round !== 0 ? null : setResume("flex");
+        round !== 0 ? null : setResume("flex")
       }
     }
   };
 
   const checkResults = (currentDice) => {
     if (userChoice) {
-      dice <= currentDice ? setScore(score + 0.1) : null;
+      dice <= currentDice ? setScore(score + 0.1) : null
     } else {
-      dice >= currentDice ? setScore(score + 0.1) : null;
+      dice >= currentDice ? setScore(score + 0.1) : null
     }
   };
 
   const handleClick = () => {
-    setRound(round + 1);
+    setRound(round + 1)
   };
 
   return (
@@ -109,7 +106,6 @@ const Index = () => {
             justifyContent="space-evenly"
           >
             <Flex>Score {score?.toFixed(1)}</Flex>
-            {/* ? optional chaining */}
             <StyledButton onClick={() => changeDisplay("flex")}>
               Game <br></br> Results
             </StyledButton>
@@ -159,7 +155,7 @@ const Index = () => {
           <StyledHeading> Round Score </StyledHeading>
 
           {isLoading ? (
-            <div>Loading results ...</div>
+            <Center>Loading results ...</Center>
           ) : (
             <Center h="150%" w="100%" flexDir="column" flex="wrap">
               {gameResults.map((item) => (
