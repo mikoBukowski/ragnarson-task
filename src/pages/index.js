@@ -3,7 +3,7 @@ import { Stack } from "..//components/Stack";
 import { StyledHeading } from "..//components/Heading";
 import { StyledButton } from "..//components/Button";
 import { useEffect, useState } from "react";
-import { Flex, Image, Skeleton, Center, Text } from "@chakra-ui/react";
+import { Flex, Image, Skeleton, Center, Text, Spacer } from "@chakra-ui/react";
 import axios from "axios";
 
 const Index = () => {
@@ -151,8 +151,7 @@ const Index = () => {
             Back <br></br> to game
           </StyledButton>
 
-          <StyledHeading> Round Score </StyledHeading>
-
+          <StyledHeading> Round  Score </StyledHeading>
           {isLoading ? (
             <Center>Loading results ...</Center>
           ) : (
@@ -161,11 +160,11 @@ const Index = () => {
                 <Flex
                   h="100%"
                   w="100%"
-                  justifyContent="space-around"
-                  key={item.objectID}
-                >
-                  <Text fontSize={20}>Round: {item.round}</Text>
-                  <Text fontSize={20}>Score: {item.score}</Text>
+                  justifyContent="space-evenly"
+                  key={item.key}
+                > 
+                  <Text fontSize={50}>{item.round}</Text>
+                  <Text fontSize={50}>{item.score}</Text>
                 </Flex>
               ))}
             </Center>
