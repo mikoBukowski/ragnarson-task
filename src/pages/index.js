@@ -105,11 +105,11 @@ const Index = () => {
             alignItems="center"
             justifyContent="space-evenly"
           >
-            <Flex>Score {score?.toFixed(1)}</Flex>
+            <Text fontSize={20}>Score {score?.toFixed(1)}</Text>
             <StyledButton onClick={() => changeDisplay("flex")}>
               Game <br></br> Results
             </StyledButton>
-            <Flex>Round {round}</Flex>
+            <Text fontSize={20}>Round {round}</Text>
           </Flex>
 
           {isError && <div>Something went wrong ...</div>}
