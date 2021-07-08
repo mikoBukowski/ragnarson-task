@@ -60,9 +60,9 @@ const Index = () => {
   }
   
   const handleGameOver = () => {
-    if (round >= 30) {
+    if (round >= 2) {
       resetScore();
-      alert(`'END SCORE: ${score}'`);
+      alert(`'END SCORE: ${score?.toFixed(1)}'`);
     }
   };
 
@@ -111,7 +111,8 @@ const Index = () => {
             alignItems="center"
             justifyContent="space-evenly"
           >
-            <Flex>Score {score.toFixed(1)}</Flex>
+            <Flex>Score {score?.toFixed(1)}</Flex> 
+            {/* ? optional chaining */}
             <StyledButton
               onClick={() => changeDisplay("flex")}
             >
