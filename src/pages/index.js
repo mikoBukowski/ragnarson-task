@@ -3,10 +3,10 @@ import { Stack } from "..//components/Stack";
 import { StyledHeading } from "..//components/Heading";
 import { StyledButton } from "..//components/Button";
 import { useEffect, useState } from "react";
-import { 
+import {
   Flex,
   Image,
-  Skeleton
+  Skeleton,
 } from "@chakra-ui/react";
 import axios from "axios";
 
@@ -33,15 +33,15 @@ const Index = () => {
       try {
         const result = await axios(endpoint);
         setData(result.data);
-        setGameResults(result.data)
+        setGameResults(result.data);
         setDice(result.data.dice);
         round === 0 ? null : checkResults(result.data.dice);
         handleGameOver();
-        handleLocalStorage()
+        handleLocalStorage();
       } catch (error) {
         setIsError(true);
       }
-      console.log(gameResults)
+      console.log(gameResults);
       setIsLoading(false);
     };
 
@@ -57,8 +57,8 @@ const Index = () => {
   const handleLocalStorage = () => {
     window.localStorage.setItem("round", round);
     window.localStorage.setItem("score", score);
-  }
-  
+  };
+
   const handleGameOver = () => {
     if (round >= 30) {
       resetScore();
@@ -87,13 +87,9 @@ const Index = () => {
     // console.log(`'USERS CHOICE - ${userChoice}'`)
 
     if (userChoice) {
-      dice <= currentDice
-        ? (setScore(score + 0.1), alert("You receive 0.1 pts"))
-        : null;
+      dice <= currentDice ? setScore(score + 0.1) : null;
     } else {
-      dice >= currentDice
-        ? (setScore(score + 0.1), alert("You receive 0.1 pts"))
-        : null;
+      dice >= currentDice ? setScore(score + 0.1) : null;
     }
   };
 
@@ -111,11 +107,9 @@ const Index = () => {
             alignItems="center"
             justifyContent="space-evenly"
           >
-            <Flex>Score {score?.toFixed(1)}</Flex> 
+            <Flex>Score {score?.toFixed(1)}</Flex>
             {/* ? optional chaining */}
-            <StyledButton
-              onClick={() => changeDisplay("flex")}
-            >
+            <StyledButton onClick={() => changeDisplay("flex")}>
               Game <br></br> Results
             </StyledButton>
             <Flex>Round {round}</Flex>
@@ -124,11 +118,7 @@ const Index = () => {
           {isError && <div>Something went wrong ...</div>}
 
           {isLoading ? (
-            <Skeleton
-              h={200}
-              w={200}
-              borderRadius={28}
-            />
+            <Skeleton h={200} w={200} borderRadius={28} />
           ) : (
             <Image
               h={200}
@@ -139,7 +129,6 @@ const Index = () => {
               fallbackSrc={`/dice/0.png`}
             />
           )}
-          
 
           <StyledHeading> Roll the dice! </StyledHeading>
 
@@ -162,7 +151,7 @@ const Index = () => {
           overflowY="auto"
           display={display}
         >
-          <StyledButton mt='4vh' onClick={() => changeDisplay("none")}>
+          <StyledButton mt="4vh" onClick={() => changeDisplay("none")}>
             Back <br></br> to game
           </StyledButton>
 
@@ -181,7 +170,6 @@ const Index = () => {
               ))}
             </ul>
           )} */}
-
         </Stack>
 
         {/* Resume game? */}
@@ -204,7 +192,7 @@ const Index = () => {
 
             <StyledButton
               onClick={() => {
-                resetScore(), setResume("none")
+                resetScore(), setResume("none");
               }}
             >
               No
