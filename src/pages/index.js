@@ -141,7 +141,6 @@ const Index = () => {
         </Stack>
 
         {/* Game results */}
-
         <Stack
           justifyContent="start"
           pos="fixed"
@@ -173,8 +172,7 @@ const Index = () => {
           )}
         </Stack>
 
-        {/* Resume game? */}
-
+        {/* Resume previous game prompt */}
         <Stack
           justifyContent="start"
           pos="fixed"
