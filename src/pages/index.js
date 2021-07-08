@@ -3,7 +3,11 @@ import { Stack } from "..//components/Stack";
 import { StyledHeading } from "..//components/Heading";
 import { StyledButton } from "..//components/Button";
 import { useEffect, useState } from "react";
-import { Flex, Image } from "@chakra-ui/react";
+import { 
+  Flex,
+  Image,
+  Skeleton
+} from "@chakra-ui/react";
 import axios from "axios";
 
 const Index = () => {
@@ -13,9 +17,10 @@ const Index = () => {
   const [score, setScore] = useState(0);
   const [round, setRound] = useState(0);
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [display, changeDisplay] = useState("none");
   const [resume, setResume] = useState("none");
-  const [gameResults, setGameResults] = useState([]);
+  const [gameResults, setGameResults] = useState({ game: [0] });
   const endpoint = "https://dice-api.genzouw.com/v1/dice";
   // const endpoint = "http://roll.diceapi.com/json/d6"
   // changed to this specific endpoint due to cors policy during deployment, HTTPS does the trick // .then(payload => data.push(payload.dice[0].value))
@@ -23,19 +28,23 @@ const Index = () => {
   useEffect(() => {
     const fetchData = async () => {
       setIsError(false);
+      setIsLoading(true);
 
       try {
         const result = await axios(endpoint);
         setData(result.data);
+        setGameResults(result.data)
         setDice(result.data.dice);
         round === 0 ? null : checkResults(result.data.dice);
         handleGameOver();
-        window.localStorage.setItem("round", round);
-        window.localStorage.setItem("score", score);
+        handleLocalStorage()
       } catch (error) {
         setIsError(true);
       }
+
+      setIsLoading(false);
     };
+
     fetchData();
   }, [round, resume]);
 
@@ -45,6 +54,11 @@ const Index = () => {
     handlePageReload();
   }, []);
 
+  const handleLocalStorage = () => {
+    window.localStorage.setItem("round", round);
+    window.localStorage.setItem("score", score);
+  }
+  
   const handleGameOver = () => {
     if (round >= 30) {
       resetScore();
@@ -66,8 +80,6 @@ const Index = () => {
       }
     }
   };
-
-  // TODO: handleLocalStorage
 
   const checkResults = (currentDice) => {
     // console.log(`'CURRENT DICE - ${currentDice}'`)
@@ -110,14 +122,23 @@ const Index = () => {
 
           {isError && <div>Something went wrong ...</div>}
 
-          <Image
-            h={200}
-            w={200}
-            src={`/dice/${data.dice}.png`}
-            borderRadius={28}
-            alt={dice}
-            fallbackSrc={`/dice/0.png`}
-          />
+          {isLoading ? (
+            <Skeleton
+              h={200}
+              w={200}
+              borderRadius={28}
+            />
+          ) : (
+            <Image
+              h={200}
+              w={200}
+              src={`/dice/${data.dice}.png`}
+              borderRadius={28}
+              alt={dice}
+              fallbackSrc={`/dice/0.png`}
+            />
+          )}
+          
 
           <StyledHeading> Roll the dice! </StyledHeading>
 
@@ -140,21 +161,26 @@ const Index = () => {
           overflowY="auto"
           display={display}
         >
-          <Flex
-            h="12vh"
-            w="100%"
-            m={6}
-            alignItems="center"
-            justifyContent="space-evenly"
-          >
-            <StyledButton onClick={() => changeDisplay("none")}>
-              Back <br></br> to game
-            </StyledButton>
-          </Flex>
+          <StyledButton mt='4vh' onClick={() => changeDisplay("none")}>
+            Back <br></br> to game
+          </StyledButton>
 
           <StyledHeading> Game Results </StyledHeading>
 
           {/* TODO: ZMAPUJ WYSWIETLANIE LISTY WYNIKOW I GITARA */}
+
+          {/* {isLoading ? (
+            <div>Loading ...</div>
+          ) : (
+            <ul>
+              {data.hits.map(item => (
+                <li key={item.objectID}>
+                  <a href={item.url}>{item.title}</a>
+                </li>
+              ))}
+            </ul>
+          )} */}
+
         </Stack>
 
         {/* Resume game? */}
