@@ -56,7 +56,7 @@ const Index = () => {
 
   const handleLocalStorage = () => {
     localStorage.setItem("round", round)
-    localStorage.setItem("score", score)
+    localStorage.setItem("score", score?.toFixed(1))
     localStorage.setItem("gameResults", JSON.stringify(gameResults))
   };
 
