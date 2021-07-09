@@ -157,7 +157,7 @@ const Index = () => {
             <Center>Loading results ...</Center>
           ) : (
             <Center h="350%" w="100%" flexDir="column-reverse" flex="wrap">
-              {gameResults.map((item) => (
+              {gameResults?.map((item) => (
                 <Flex
                   h="100%"
                   w="100%"
